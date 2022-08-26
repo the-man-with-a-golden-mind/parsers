@@ -4,6 +4,10 @@
   (import (file json))
 
   (export 
+   get-string
+   get-json
+   get-line
+   get-lines
    parse-lines
    parse-json
    parse-string)
