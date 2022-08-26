@@ -4,6 +4,7 @@
   (import (file json))
 
   (export 
+   parse-lines
    parse-json
    parse-string)
 
@@ -17,9 +18,22 @@
                   (read-json-stream bytes)))
     
     (define (parse-json text)
-      (try-parse get-json (port->bytestream text) #false))
+      (car (try-parse get-json (port->bytestream text) #false)))
   
     (define (parse-string text)
-      (try-parse get-string (port->bytestream text) #false))
+      (car (try-parse get-string (port->bytestream text) #false)))
+
+  (define get-line
+      (let-parse* (
+            (bytes (greedy+ (byte-if (lambda (x) (not (eq? x #\newline))))))
+            (endl (imm #\newline)))
+         (bytes->string bytes)))
+   
+  (define get-lines
+      (let-parse* ((lines (get-greedy* get-line)))
+         lines))
+
+  (define (parse-lines text)
+    (car (try-parse get-lines (port->bytestream text) #false)))
 
     ))
