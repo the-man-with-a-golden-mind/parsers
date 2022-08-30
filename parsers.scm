@@ -27,17 +27,16 @@
     (define (parse-string text)
       (car (try-parse get-string (port->bytestream text) #false)))
 
-  (define get-line
+    (define get-line
       (let-parse* (
             (bytes (greedy+ (byte-if (lambda (x) (not (eq? x #\newline))))))
             (endl (imm #\newline)))
          (bytes->string bytes)))
    
-  (define get-lines
+    (define get-lines
       (let-parse* ((lines (get-greedy* get-line)))
          lines))
 
-  (define (parse-lines text)
-    (car (try-parse get-lines (port->bytestream text) #false)))
-
-    ))
+    (define (parse-lines text)
+      (car (try-parse get-lines (port->bytestream text) #false)))
+  ))
